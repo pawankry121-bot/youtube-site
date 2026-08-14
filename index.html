@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WakeFit Alarm</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="brand">WakeFit</div>
+      <div id="currentTime" class="current-time">--:--:--</div>
+    </div>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙</button>
+  </header>
+
+  <main>
+    <section id="alarmPage" class="page active">
+      <div class="section-title">
+        <div>
+          <h1>Alarms</h1>
+          <p>Wake up. Complete your mission.</p>
+        </div>
+        <button class="primary-btn" id="addAlarmBtn">＋ Add</button>
+      </div>
+      <div id="alarmList" class="alarm-list"></div>
+      <div id="emptyState" class="empty hidden">
+        <div class="empty-icon">⏰</div>
+        <h2>No alarms yet</h2>
+        <p>Create your first WakeFit alarm.</p>
+      </div>
+    </section>
+
+    <section id="worldPage" class="page">
+      <div class="section-title"><div><h1>World Clock</h1><p>Track different time zones.</p></div></div>
+      <div class="card">
+        <label>Add city/time zone</label>
+        <select id="zoneSelect">
+          <option value="UTC">UTC</option>
+          <option value="Asia/Kolkata">India</option>
+          <option value="America/New_York">New York</option>
+          <option value="Europe/London">London</option>
+          <option value="Asia/Tokyo">Tokyo</option>
+          <option value="Australia/Sydney">Sydney</option>
+        </select>
+        <button class="secondary-btn" id="addZoneBtn">Add Clock</button>
+      </div>
+      <div id="clockList" class="clock-list"></div>
+    </section>
+
+    <section id="stopwatchPage" class="page">
+      <div class="section-title"><div><h1>Stopwatch</h1><p>Accurate local stopwatch.</p></div></div>
+      <div class="big-time" id="stopwatchDisplay">00:00.00</div>
+      <div class="controls">
+        <button class="secondary-btn" id="lapBtn">Lap</button>
+        <button class="primary-btn" id="startStopwatchBtn">Start</button>
+        <button class="secondary-btn" id="resetStopwatchBtn">Reset</button>
+      </div>
+      <div id="laps" class="card"></div>
+    </section>
+
+    <section id="timerPage" class="page">
+      <div class="section-title"><div><h1>Timer</h1><p>Quick countdown timer.</p></div></div>
+      <div class="timer-inputs">
+        <input id="timerMin" type="number" min="0" max="999" placeholder="Min">
+        <input id="timerSec" type="number" min="0" max="59" placeholder="Sec">
+      </div>
+      <div class="big-time" id="timerDisplay">00:00</div>
+      <div class="controls">
+        <button class="primary-btn" id="startTimerBtn">Start</button>
+        <button class="secondary-btn" id="resetTimerBtn">Reset</button>
+      </div>
+    </section>
+
+    <section id="settingsPage" class="page">
+      <div class="section-title"><div><h1>Settings</h1><p>Customize WakeFit.</p></div></div>
+      <div class="card settings">
+        <label>Theme</label>
+        <select id="themeSelect">
+          <option value="system">System</option>
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+        <label>Accent</label>
+        <div class="accent-row">
+          <button class="accent purple" data-accent="purple"></button>
+          <button class="accent blue" data-accent="blue"></button>
+          <button class="accent cyan" data-accent="cyan"></button>
+          <button class="accent pink" data-accent="pink"></button>
+        </div>
+        <label class="switch-row"><span>Daily random missions</span><input id="randomMissionSetting" type="checkbox" checked></label>
+        <label class="switch-row"><span>Vibration preference</span><input id="vibrationSetting" type="checkbox" checked></label>
+      </div>
+      <div class="card note">
+        <b>Android note</b>
+        <p>This browser prototype demonstrates the UI and core flows. Reliable Android alarms while the screen is locked/backgrounded require native Android AlarmManager/full-screen notification APIs. Camera exercise verification also needs a native pose-detection implementation.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-page="alarmPage">🔔<span>Alarm</span></button>
+    <button class="nav-btn" data-page="worldPage">🌍<span>World Clock</span></button>
+    <button class="nav-btn" data-page="stopwatchPage">⏱<span>Stopwatch</span></button>
+    <button class="nav-btn" data-page="timerPage">⌛<span>Timer</span></button>
+  </nav>
+
+  <div class="modal hidden" id="alarmModal">
+    <div class="modal-card">
+      <div class="modal-head"><h2 id="modalTitle">New Alarm</h2><button class="icon-btn" id="closeModal">✕</button></div>
+      <label>Time<input id="alarmTime" type="time"></label>
+      <label>Label<input id="alarmLabel" type="text" placeholder="Wake up"></label>
+      <label>Repeat days</label>
+      <div id="dayPicker" class="days"></div>
+      <label>Mission</label>
+      <select id="missionType">
+        <option value="pushups">💪 Push-ups</option>
+        <option value="squats">🏋️ Squats</option>
+        <option value="steps">🏃 Steps</option>
+        <option value="jumping">🤸 Jumping Jacks</option>
+        <option value="plank">🧘 Plank</option>
+        <option value="math">🧠 Math Challenge</option>
+        <option value="random">🎲 Daily Random</option>
+      </select>
+      <label>Difficulty</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option>
+      </select>
+      <label class="switch-row"><span>Strict Mission Mode</span><input id="strictMission" type="checkbox" checked></label>
+      <label class="switch-row"><span>Vibration</span><input id="alarmVibration" type="checkbox" checked></label>
+      <div class="controls">
+        <button class="secondary-btn" id="cancelAlarm">Cancel</button>
+        <button class="primary-btn" id="saveAlarm">Save Alarm</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="ringModal">
+    <div class="ring-card">
+      <div class="ring-time" id="ringTime">06:00</div>
+      <div class="ring-label" id="ringLabel">GOOD MORNING!</div>
+      <div class="mission-pill" id="ringMission">💪 10 Push-ups</div>
+      <div id="cameraWrap" class="camera-wrap hidden">
+        <video id="cameraVideo" autoplay playsinline></video>
+        <div class="camera-overlay">Keep your full body visible</div>
+      </div>
+      <div class="progress"><div id="missionProgress"></div></div>
+      <div id="missionCounter" class="counter">0 / 10</div>
+      <p id="missionInstruction">Complete the mission to dismiss the alarm.</p>
+      <div class="controls">
+        <button class="secondary-btn" id="startCameraBtn">Open Camera</button>
+        <button class="primary-btn" id="missionActionBtn">Complete 1 Rep</button>
+        <button class="danger-btn" id="emergencyStopBtn">Emergency Stop</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
